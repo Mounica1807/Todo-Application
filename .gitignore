@@ -1,0 +1,6 @@
+node_modules/
+todos.db
+.env
+todos.db-journal
+todos.db-shm
+todos.db-wal

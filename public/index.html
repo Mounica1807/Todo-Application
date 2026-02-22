@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .home {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        /* ── Auth Form ── */
+        #auth {
+            width: 100%;
+        }
+
+        #form-title {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+        }
+
+        #username, #password {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        #username::placeholder, #password::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        #username:focus, #password:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        #main-btn {
+            width: 100%;
+            padding: 14px 20px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        #main-btn:active {
+            transform: translateY(0);
+        }
+
+        #auth p {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        #switch-link {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #switch-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* ── Todo App ── */
+        #todo-app h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+        }
+
+        .input {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        #task-input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        #task-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        #task-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        #add-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        #add-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ── Todo List ── */
+        .todo-list {
+            list-style: none;
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .todo-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .todo-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .todo-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .todo-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .todo-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateX(4px);
+        }
+
+        .todo-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #f5576c;
+        }
+
+        .todo-label {
+            flex: 1;
+            margin-left: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .todo-item button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: #ff6b6b;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .todo-item button:hover {
+            background: rgba(255, 107, 107, 0.3);
+            transform: scale(1.2);
+        }
+
+        /* ── Logout Button ── */
+        #logout {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 20px;
+        }
+
+        #logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        #logout:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+  <div class="home">
+
+    <!-- ── Login / Register form ── -->
+    <div id="auth" style="text-align:center; max-width:350px;" autocomplete="off">
+      <h2 id="form-title">Login</h2>
+      
+      <input id="username" type="text" placeholder="Username" autocomplete="username" style="width:100%; margin:8px 0;">
+      <input id="password" type="password" placeholder="Password" autocomplete="new-password" style="width:100%; margin:8px 0;">
+      
+      <button id="main-btn" style="width:100%; padding:10px;">Login</button>
+      
+      <p style="margin-top:12px;">
+        <a href="#" id="switch-link">No account? Register</a>
+      </p>
+    </div>
+
+    <!-- ── Todo list (hidden until login) ── -->
+    <div id="todo-app" style="display:none;">
+      <h1>Todo List</h1>
+      <div class="input">
+        <input id="task-input" type="text" placeholder="Enter a task">
+        <button id="add-btn">Add</button>
+      </div>
+      <ul id="todo-list" class="todo-list"></ul>
+      <button id="logout" style="margin-top:20px; background:#e74c3c; color:white;">
+        Logout
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const API = "http://localhost:5000/api";
+    let token = localStorage.getItem("token");
+
+    const authDiv    = document.getElementById("auth");
+    const todoDiv    = document.getElementById("todo-app");
+    const title      = document.getElementById("form-title");
+    const mainBtn    = document.getElementById("main-btn");
+    const switchLink = document.getElementById("switch-link");
+    const usernameIn = document.getElementById("username");
+    const passwordIn = document.getElementById("password");
+
+    let isRegister = false;
+
+    // Switch between login & register
+    switchLink.onclick = (e) => {
+      e.preventDefault();
+      isRegister = !isRegister;
+      title.innerText = isRegister ? "Register" : "Login";
+      mainBtn.innerText = isRegister ? "Sign Up" : "Login";
+      switchLink.innerText = isRegister ? "Already have account? Login" : "No account? Register";
+      usernameIn.value = "";
+      passwordIn.value = "";
+    };
+
+    // Login or Register button
+    mainBtn.onclick = async () => {
+      const username = usernameIn.value.trim();
+      const password = passwordIn.value.trim();
+
+      if (!username || !password) {
+        alert("Fill username and password");
+        return;
+      }
+
+      const url = isRegister ? "/register" : "/login";
+
+      try {
+        const resp = await fetch(API + url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) throw new Error(data.error || "Something wrong");
+
+        localStorage.setItem("token", data.token);
+        token = data.token;
+
+        usernameIn.value = "";
+        passwordIn.value = "";
+
+        authDiv.style.display = "none";
+        todoDiv.style.display = "block";
+
+        loadTasks();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    // Load tasks
+    async function loadTasks() {
+      if (!token) return;
+
+      try {
+        const res = await fetch(API + "/todos", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (!res.ok) throw new Error("Session expired");
+
+        const tasks = await res.json();
+        const list = document.getElementById("todo-list");
+        list.innerHTML = "";
+
+        tasks.forEach(t => {
+          const li = document.createElement("li");
+          li.className = "todo-item";
+
+          const chk = document.createElement("input");
+          chk.type = "checkbox";
+          chk.checked = t.completed;
+
+          const txt = document.createElement("span");
+          txt.className = "todo-label";
+          txt.textContent = t.text;
+          if (t.completed) txt.style.textDecoration = "line-through";
+
+          const del = document.createElement("button");
+          del.textContent = "×";
+          del.style.marginLeft = "auto";
+          del.style.color = "red";
+
+          chk.onchange = () => {
+            txt.style.textDecoration = chk.checked ? "line-through" : "none";
+            txt.style.opacity = chk.checked ? "0.6" : "1";
+            toggleTask(t.id, chk.checked);
+          };
+          del.onclick = () => deleteTask(t.id, li);
+
+          li.append(chk, txt, del);
+          list.appendChild(li);
+        });
+      } catch (e) {
+        alert(e.message);
+        logout();
+      }
+    }
+
+    async function toggleTask(id, isDone) {
+      await fetch(API + "/todos/" + id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ completed: isDone })
+      });
+    }
+
+    async function deleteTask(id, liElement) {
+      if (!confirm("Delete?")) return;
+      await fetch(API + "/todos/" + id, {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + token }
+      });
+      liElement.remove();
+    }
+
+    document.getElementById("add-btn").onclick = async () => {
+      const text = document.getElementById("task-input").value.trim();
+      if (!text) return;
+
+      const res = await fetch(API + "/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ text })
+      });
+
+      const newTask = await res.json();
+      document.getElementById("task-input").value = "";
+
+      // Add to list immediately
+      const li = document.createElement("li");
+      li.className = "todo-item";
+
+      const chk = document.createElement("input");
+      chk.type = "checkbox";
+
+      const txt = document.createElement("span");
+      txt.className = "todo-label";
+      txt.textContent = newTask.text;
+
+      const del = document.createElement("button");
+      del.textContent = "×";
+      del.style.marginLeft = "auto";
+      del.style.color = "red";
+
+      chk.onchange = () => {
+        txt.style.textDecoration = chk.checked ? "line-through" : "none";
+        txt.style.opacity = chk.checked ? "0.6" : "1";
+        toggleTask(newTask.id, chk.checked);
+    };
+      del.onclick = () => deleteTask(newTask.id, li);
+
+      li.append(chk, txt, del);
+      document.getElementById("todo-list").appendChild(li);
+    };
+
+    document.getElementById("logout").onclick = () => {
+      localStorage.removeItem("token");
+      token = null;
+      todoDiv.style.display = "none";
+      authDiv.style.display = "block";
+      document.getElementById("todo-list").innerHTML = "";
+      usernameIn.value = "";
+      passwordIn.value = "";
+    };
+
+    function logout() {
+      localStorage.removeItem("token");
+      token = null;
+      todoDiv.style.display = "none";
+      authDiv.style.display = "block";
+      document.getElementById("todo-list").innerHTML = "";
+      usernameIn.value = "";
+      passwordIn.value = "";
+    }
+
+    // Start
+    usernameIn.value = "";
+    passwordIn.value = "";
+    
+    // Force clear after page load settles to override browser autocomplete
+    setTimeout(() => {
+      usernameIn.value = "";
+      passwordIn.value = "";
+    }, 100);
+    
+    if (token) {
+      authDiv.style.display = "none";
+      todoDiv.style.display = "block";
+      loadTasks();
+    }
+  </script>
+</body>
+</html>
